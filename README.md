@@ -1,19 +1,20 @@
-# NYC Mobility Demand — Time Series Modeling and Volatility Analysis
+# Analyzing NYC Mobility Demand: An ARMA-GARCH Approach to Post-COVID Recovery
 
-End-to-end statistical analysis of urban mobility demand using ARMA and GARCH models, with a focus on structural breaks and post-shock dynamics.
+A quantitative analysis of demand dynamics and volatility in NYC mobility data following a major structural shock.
 
 ---
 
-## Overview
+## Project Overview & Business Value
 
-This project analyzes the dynamics of daily mobility demand in New York City using Yellow Taxi and For-Hire Vehicle (FHV) trip data.
+When New York City entered lockdown in March 2020, mobility demand collapsed abruptly, creating a natural experiment to study how complex systems behave under extreme disruption.
 
-The objective is to:
+This project develops a rigorous statistical framework to analyze the recovery of urban mobility demand and quantify its uncertainty.
 
-* understand how demand evolves over time,
-* identify the impact of a major structural shock (COVID-19),
-* model short-term behavior using time series techniques,
-* and quantify uncertainty through volatility modeling.
+By applying ARMA and GARCH models to NYC Taxi and For-Hire Vehicle (FHV) data, the analysis:
+
+1. Separates baseline demand dynamics from periods of extreme volatility
+2. Compares behavioral differences between Taxi and FHV markets
+3. Provides a fully reproducible analytical pipeline
 
 ---
 
@@ -31,8 +32,10 @@ The objective is to:
 
 ## Structural Break
 
-A major structural break occurs on March 22, 2020 (NYC lockdown).
-All modeling is conducted on the post-shock period, where statistical properties are more stable.
+A major structural break occurs on **March 22, 2020** (NYC lockdown).
+All modeling focuses on the post-shock period, where statistical properties are more stable.
+
+---
 
 ![Full Year Demand with Structural Break](figures/main/02_full_year_with_pause_marker.png)
 
@@ -42,7 +45,7 @@ All modeling is conducted on the post-shock period, where statistical properties
 
 ### Transformation
 
-To ensure stationarity and stabilize variance, the following transformations are applied:
+To stabilize variance and ensure stationarity, the following transformations are applied:
 
 * Log transformation
 * First-order differencing
@@ -52,12 +55,12 @@ To ensure stationarity and stabilize variance, the following transformations are
 
 ### Stationarity Testing
 
-Two complementary statistical tests are used:
+Two complementary tests are used:
 
 * Augmented Dickey-Fuller (ADF)
 * KPSS test
 
-Results indicate:
+Results:
 
 * ADF rejects the null hypothesis of a unit root (p < 0.01)
 * KPSS fails to reject stationarity
@@ -73,7 +76,7 @@ Autocorrelation analysis (ACF and PACF) is used to determine model structure.
 Selected models:
 
 * Taxi: ARMA(2,1)
-* FHV: ARMA(1,2)
+* FHV: ARMA(1,1)
 
 ---
 
@@ -81,19 +84,31 @@ Selected models:
 
 Short-term forecasts are generated on the stationary series and compared to observed values.
 
-![Taxi Forecast vs Actual](figures/main/16b_forecast_taxi_levels.png)
-![FHV Forecast vs Actual](figures/main/17b_forecast_fhv_levels.png)
-
-The models capture general demand dynamics, but do not fully account for extreme shocks, which is a known limitation of linear time series models.
+The following figures illustrate the model’s ability to capture short-term dynamics, while highlighting its limitations during periods of high volatility.
 
 ---
 
-### Volatility Modeling
+![Taxi Forecast vs Actual](figures/main/16b_forecast_taxi_levels.png)
 
-To model time-varying uncertainty, a GARCH(1,1) model is applied to the residuals.
+![FHV Forecast vs Actual](figures/main/17b_forecast_fhv_levels.png)
+
+---
+
+The models capture general demand patterns but do not fully account for extreme shocks, which is a known limitation of linear time series models.
+
+---
+
+### Volatility Modeling (GARCH)
+
+To account for time-varying uncertainty, a GARCH(1,1) model is applied to the residuals.
+
+---
 
 ![Taxi Volatility](figures/main/18_volatility_taxi.png)
+
 ![FHV Volatility](figures/main/19_volatility_fhv.png)
+
+---
 
 The results show clear evidence of volatility clustering and periods of elevated uncertainty following structural disruptions.
 
@@ -109,12 +124,14 @@ The results show clear evidence of volatility clustering and periods of elevated
 
 ---
 
-## Technical Stack
+## Methodology & Technical Stack
+
+The analysis follows a structured and reproducible pipeline:
 
 * Language: R
-* Libraries: dplyr, ggplot2, forecast, tseries
-* Methods: ARMA, GARCH, ADF, KPSS, ACF/PACF
-* Workflow: Modular scripts and reproducible pipeline
+* Libraries: dplyr, ggplot2, forecast, tseries, vars
+* Methods: ARMA, GARCH(1,1), ADF, KPSS, ACF/PACF, Ljung-Box, AIC/BIC
+* Estimation: Maximum Likelihood
 
 ---
 
@@ -133,17 +150,23 @@ All figures and processed datasets will be generated automatically.
 ## Project Structure
 
 ```
-scripts/       # data processing, modeling, and analysis
-data/          # raw and processed datasets
-figures/       # main and diagnostic visualizations
-report/        # written report (if included)
+.
+├── README.md
+├── report/
+├── data/
+├── figures/
+│   ├── main/
+│   └── diagnostics/
+└── scripts/
 ```
 
 ---
 
 ## Conclusion
 
-This project demonstrates how combining mean dynamics (ARMA models) and variance dynamics (GARCH models) provides a more comprehensive understanding of real-world time series affected by structural shocks and uncertainty.
+This project highlights the importance of combining mean and variance modeling when analyzing real-world systems affected by structural shocks.
+
+While ARMA models capture baseline dynamics, GARCH models reveal the underlying risk structure, providing a more complete understanding of system behavior under uncertainty.
 
 ---
 
@@ -152,8 +175,8 @@ This project demonstrates how combining mean dynamics (ARMA models) and variance
 Potential extensions include:
 
 * Seasonal models (SARIMA)
-* Inclusion of exogenous variables (weather, policy indicators)
+* Incorporation of exogenous variables (weather, policy indicators)
 * Multivariate modeling (VAR, DCC-GARCH)
-* Regime-switching approaches
+* Regime-switching models
 
 ---
