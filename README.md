@@ -88,9 +88,9 @@ The following figures illustrate the model’s ability to capture short-term dyn
 
 ---
 
-![Taxi Forecast vs Actual](figures/main/16b_forecast_taxi_levels.png)
+![Taxi Forecast vs Actual](figures/main/16b_forecast_taxi.png)
 
-![FHV Forecast vs Actual](figures/main/17b_forecast_fhv_levels.png)
+![FHV Forecast vs Actual](figures/main/17b_forecast_fhv.png)
 
 ---
 
